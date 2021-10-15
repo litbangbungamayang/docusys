@@ -1,0 +1,6 @@
+CRITICAL - 2021-06-06 19:15:17 --> The framework needs the following extension(s) installed and loaded: {0}.
+#0 /opt/lampp/htdocs/eis-2/system/CodeIgniter.php(224): CodeIgniter\Exceptions\FrameworkException::forMissingExtension()
+#1 /opt/lampp/htdocs/eis-2/system/CodeIgniter.php(172): CodeIgniter\CodeIgniter->resolvePlatformExtensions()
+#2 /opt/lampp/htdocs/eis-2/system/bootstrap.php(159): CodeIgniter\CodeIgniter->initialize()
+#3 /opt/lampp/htdocs/eis-2/spark(53): require('/opt/lampp/htdo...')
+#4 {main}
