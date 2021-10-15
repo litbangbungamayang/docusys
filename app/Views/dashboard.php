@@ -15,7 +15,7 @@
         <div class="row align-items-center">
           <div class="col">
             <h2 class="page-title">
-              Monitoring Dokumen PBJ
+              Monitoring Penggunaan Anggaran
             </h2>
             <div class="page-pretitle" id="tgl_aktual"></div>
           </div>

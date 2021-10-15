@@ -34,7 +34,7 @@
               </svg>
             </span>
             <span class="nav-link-title">
-              Buat Dokumen PBJ
+              Buat Dokumen Pengadaan
             </span>
           </a>
         </li>
