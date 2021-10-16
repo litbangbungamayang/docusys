@@ -8,4 +8,9 @@ class C_addDokumen extends BaseController
 	{
 		return view('addDokumen');
 	}
+
+	public function getDataRekening(){
+		$this->model_rekening = Model("M_Rekening");
+		echo ($this->model_rekening->getDataRekening());
+	}
 }

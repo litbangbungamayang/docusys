@@ -34,7 +34,7 @@
               </svg>
             </span>
             <span class="nav-link-title">
-              Buat Dokumen Pengadaan
+              Input Data Dokumen
             </span>
           </a>
         </li>
