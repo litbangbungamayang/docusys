@@ -18,4 +18,12 @@
 <!-- Selectize -->
 <script src="<?php echo base_url('public/selectize/js/standalone/selectize.js');?>"></script>
 <link href="<?php echo base_url('public/selectize/css/selectize.css');?>" rel="stylesheet"/>
+<!-- DataTables -->
+<script src="<?php echo base_url('public/DataTables/datatables.js');?>"></script>
+<link href="<?php echo base_url('public/DataTables/datatables.css');?>" rel="stylesheet"/>
+<!------------------------------------------------------------->
+<!-- Bootstrap Icon -->
+<link href="<?php echo base_url('public/bootstrap-icons/bootstrap-icons.css');?>" rel="stylesheet"/>
+<!------------------------------------------------------------->
+
 <!------------------------------------------------------------->

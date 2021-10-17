@@ -28,28 +28,53 @@
               <div class="row mb-2">
                 <div class="card card-body">
                   <div class="row mb-2">
-                    <div class="col-lg-3">
+                    <div class="col-lg-1">
                       <div class="col-lg-12">
-                        <div class="form-label">Jenis Dokumen</div>
+                        <div class="form-label">Jenis</div>
                         <select class="custom-control custom-select" id="cbx_jenisDokumen" name="jenis_dokumen"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                       <div class="col-lg-12">
                         <div class="form-label">Kategori</div>
                         <select class="custom-control custom-select" id="cbx_kategori" name="kategori"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-1">
+                      <div class="col-lg-12">
+                        <div class="form-label">Unit</div>
+                        <select class="custom-control custom-select" id="cbx_unit" name="unit"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
                       <div class="col-lg-12">
                         <div class="form-label">Bagian</div>
                         <select class="custom-control custom-select" id="cbx_bagian" name="bagian"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-1">
+                      <div class="col-lg-12">
+                        <div class="form-label">Tahun</div>
+                        <select class="custom-control custom-select" id="cbx_tahun" name="tahun"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
                     <div class="col-lg-3">
                       <div class="col-lg-12">
-                        <div class="form-label">Tahun Anggaran</div>
-                        <select class="custom-control custom-select" id="cbx_tahun" name="tahun"></select>
+                        <div class="form-label">Nomor dokumen</div>
+                        <input type="text" style="text-transform: uppercase;" class="form-control" id="txt_nomorDokumen" name="no_dokumen" placeholder="Nomor dokumen">
+                        <div class="invalid-feedback">Harus diisi!</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="form-group mb-2">
+                        <div class="form-label">Tanggal dokumen</div>
+                        <input type="date" style="text-transform: uppercase;" class="form-control" id="dtp_tglDokumen" name="tgl_dokumen">
+                        <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
                   </div>
@@ -62,10 +87,12 @@
                       <div class="form-group mb-2">
                         <div class="form-label">Rekening</div>
                         <select class="custom-control custom-select" id="cbx_rekening" name="nomor_rekening"></select>
+                        <div class="invalid-feedback">Rekening harus dipilih!</div>
                       </div>
                       <div class="form-group">
                         <label class="form-label">Deskripsi Barang/Jasa</label>
                         <textarea style="resize: none; text-transform: uppercase" class="form-control" rows="5" id="txt_deskripsi" name="deskripsi"></textarea>
+                        <div class="invalid-feedback">Deskripsi harus diisi!</div>
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -82,34 +109,37 @@
                         <input type="text" style="text-transform: uppercase; text-align: right;" class="form-control" id="txt_nilaiLain" name="lain" placeholder="Nilai lainnya">
                       </div>
                     </div>
-                    <div class="col-lg-2">
-                      <div class="form-group mb-2">
-                        <div class="form-label">Tanggal dokumen</div>
-                        <input type="date" style="text-transform: uppercase;" class="form-control" id="dtp_tglDokumen" name="tgl_dokumen">
+
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-lg-12">
+                      <div class="">
+                        <a href="#" id="btn_add" onClick="addItem();" class="btn btn-green w-70">
+                          <i class="bi bi-plus-square" style="margin-right:5px"></i>Tambah Data
+                        </a>
+                        <a href="#" id="btn_save" onClick="save();" class="btn btn-blue w-70">
+                          <i class="bi bi-save" style="margin-right:5px"></i>Simpan Data
+                        </a>
                       </div>
                     </div>
                   </div>
-                  <div class="row mb-2">
-                    <div class="col-lg-3">
-                      <div class=""><a href="#" id="btn_add" onClick="addItem();" class="btn btn-primary w-70">Tambah Data</a></div>
-                    </div>
-                  </div>
                   <div class="row">
-                    <div class="table-responsive">
-                      <table class="table table-vcenter card-table">
+                    <div class="col-lg-12">
+                      <table id="tbl_permintaan" class="table card-table table-vcenter text-nowrap datatable table-sm">
                         <thead>
                           <tr>
                             <th class="w-1">No.</th>
                             <th style="text-align:left;">Rekening</th>
-                            <th style="text-align:right;">Deskripsi Barang/Jasa</th>
+                            <th style="text-align:left;">Deskripsi Barang/Jasa</th>
                             <th style="text-align:right;">Nilai Bahan</th>
                             <th style="text-align:right;">Nilai Upah</th>
                             <th style="text-align:right;">Lainnya</th>
                             <th style="text-align:right;">Jumlah</th>
+                            <th style="text-align:center;"></th>
                             <th></th>
                           </tr>
                         </thead>
-                        <tbody id="dataText">
+                        <tbody>
                         </tbody>
                       </table>
                     </div>
