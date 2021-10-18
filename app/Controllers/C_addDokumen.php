@@ -44,8 +44,15 @@ class C_addDokumen extends BaseController
 
 	public function getSisaAnggaran(){
 		$kode_rekening = $this->request->getVar("kode_rekening");
+		$tahun = $this->request->getVar("tahun");
+		$unit = $this->request->getVar("unit");
+		$arg = array(
+			"kode_rekening" => $kode_rekening,
+			"tahun" => $tahun,
+			"unit" => $unit
+		);
 		$this->model_anggaran = Model("M_Anggaran");
-		return $this->model_anggaran->getSisaAnggaran($kode_rekening);
+		return $this->model_anggaran->getSisaAnggaran($arg);
 	}
 
 }

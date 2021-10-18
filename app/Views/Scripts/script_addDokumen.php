@@ -125,6 +125,9 @@
     cbx_tahun.removeClass("is-invalid");
     arr_permintaan = [];
     refreshTblPermintaan();
+    cbx_kategori[0].selectize.disable();
+    cbx_rekening[0].selectize.disable();
+    cbx_tahun[0].selectize.disable();
   }
 
   txt_nilaiBahan.blur(function(){
@@ -172,13 +175,17 @@
         $.ajax({
           dataType: "json",
           type: "get",
-          data: {kategori: value},
+          data: {
+            kategori: value
+          },
           url: "C_addDokumen/getDataRekeningByKategori",
           success: function(response){
-            cbx_rekening[0].selectize.clear();
-            cbx_rekening[0].selectize.clearOptions();
-            cbx_rekening[0].selectize.addOption(response);
-            cbx_rekening[0].selectize.enable();
+            if(cbx_unit.val() !== ""){
+              cbx_rekening[0].selectize.clear();
+              cbx_rekening[0].selectize.clearOptions();
+              cbx_rekening[0].selectize.addOption(response);
+              cbx_rekening[0].selectize.enable();
+            }
           }
         })
       }
@@ -189,7 +196,10 @@
     });
     cbx_tahun.selectize({
       create: false,
-      sortField: "text"
+      sortField: "text",
+      onChange: function(value){
+        cbx_kategori[0].selectize.enable();
+      }
     });
     cbx_rekening.selectize({
       valueField: "kode_rekening",
@@ -202,18 +212,27 @@
         $.ajax({
           dataType: "json",
           type: "post",
-          data: {kode_rekening: value},
+          data: {
+            kode_rekening: value,
+            tahun: cbx_tahun.val(),
+            unit: cbx_unit.val()
+          },
           url: js_base_url + "C_addDokumen/getSisaAnggaran",
           success: function(res){
-            sisa_anggaran = parseFloat(res.sisa);
-            lbl_anggaranTersedia.val("Rp" + sisa_anggaran.toLocaleString({}));
+            if(res !== null){
+              sisa_anggaran = parseFloat(res.sisa) || 0;
+              lbl_anggaranTersedia.val("Rp" + sisa_anggaran.toLocaleString({}));
+            }
           }
         })
       }
     });
     cbx_unit.selectize({
       create: false,
-      sortField: "text"
+      sortField: "text",
+      onChange: function(value){
+        cbx_tahun[0].selectize.enable();
+      }
     })
     cbx_jenisDokumen[0].selectize.addOption({value: 'au31', text: 'AU31'});
     cbx_jenisDokumen[0].selectize.addOption({value: 'pb74', text: 'PB74'});
@@ -231,6 +250,8 @@
     cbx_unit[0].selectize.addOption({value: 'buma', text: 'BUMA'});
     cbx_unit[0].selectize.addOption({value: 'cima', text: 'CIMA'});
     cbx_rekening[0].selectize.disable();
+    cbx_kategori[0].selectize.disable();
+    cbx_tahun[0].selectize.disable();
   }
 
   function initTable(){

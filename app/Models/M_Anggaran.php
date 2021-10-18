@@ -7,29 +7,33 @@ use CodeIgniter\Model;
 class M_Anggaran extends Model{
 
   protected $table = "tbl_bgt_anggaran";
-  protected $primaryKey = "id";
-  protected $allowedFields = [
-    "id",
-    "kode_rekening",
-    "unit",
-    "nilai",
-    "tahun_anggaran"
-  ];
-
-  function addPermintaan($arg){
-    return json_encode($this->db->table($this->table)->insertBatch($arg));
-  }
 
   function getSisaAnggaran($arg){
     $query = "
-    select ang.kode_rekening, ang.nilai, (req.bahan+req.upah+req.lainnya) as terpakai,
-      (ang.nilai - (req.bahan+req.upah+req.lainnya)) as sisa
-    from tbl_bgt_anggaran ang
-      join tbl_bgt_permintaan req on req.nomor_rekening = ang.kode_rekening
-    where ang.kode_rekening = ?
-    group by ang.kode_rekening;
+      select
+        bgt.*,
+        IFNULL(sub.pemakaian,0) as pemakaian,
+        bgt.nilai-IFNULL(sub.pemakaian,0) as sisa
+      from tbl_bgt_anggaran bgt
+      	left join (
+      		select
+      			req.nomor_rekening,
+      			(sum(req.bahan) + sum(req.upah) + sum(req.lainnya)) as pemakaian
+      		from tbl_bgt_dokumen dok
+      			join tbl_bgt_permintaan req on dok.id = req.id_dokumen
+      		where req.nomor_rekening = ? and dok.unit = ? and dok.tahun = ?
+          ) sub on sub.nomor_rekening = bgt.kode_rekening
+      where bgt.kode_rekening = ? and bgt.unit = ? and bgt.tahun_anggaran = ?
     ";
-    return json_encode($this->db->query($query, array($arg))->getRow());
+
+    return json_encode($this->db->query($query, [
+        $arg['kode_rekening'],
+        $arg['unit'],
+        $arg['tahun'],
+        $arg['kode_rekening'],
+        $arg['unit'],
+        $arg['tahun']
+      ])->getRow());
   }
 
 }

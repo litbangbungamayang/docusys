@@ -28,10 +28,24 @@
               <div class="row mb-2">
                 <div class="card card-body">
                   <div class="row mb-2">
-                    <div class="col-lg-1">
+                    <div class="col-lg-2">
                       <div class="col-lg-12">
                         <div class="form-label">Jenis</div>
                         <select class="custom-control custom-select" id="cbx_jenisDokumen" name="jenis_dokumen"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="col-lg-12">
+                        <div class="form-label">Unit</div>
+                        <select class="custom-control custom-select" id="cbx_unit" name="unit"></select>
+                        <div class="invalid-feedback">Harus diisi!</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="col-lg-12">
+                        <div class="form-label">Tahun</div>
+                        <select class="custom-control custom-select" id="cbx_tahun" name="tahun"></select>
                         <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
@@ -42,13 +56,6 @@
                         <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
-                    <div class="col-lg-1">
-                      <div class="col-lg-12">
-                        <div class="form-label">Unit</div>
-                        <select class="custom-control custom-select" id="cbx_unit" name="unit"></select>
-                        <div class="invalid-feedback">Harus diisi!</div>
-                      </div>
-                    </div>
                     <div class="col-lg-2">
                       <div class="col-lg-12">
                         <div class="form-label">Bagian</div>
@@ -56,21 +63,14 @@
                         <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
-                    <div class="col-lg-1">
-                      <div class="col-lg-12">
-                        <div class="form-label">Tahun</div>
-                        <select class="custom-control custom-select" id="cbx_tahun" name="tahun"></select>
-                        <div class="invalid-feedback">Harus diisi!</div>
-                      </div>
-                    </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 mt-2">
                       <div class="col-lg-12">
                         <div class="form-label">Nomor dokumen</div>
                         <input type="text" style="text-transform: uppercase;" class="form-control" id="txt_nomorDokumen" name="no_dokumen" placeholder="Nomor dokumen">
                         <div class="invalid-feedback">Harus diisi!</div>
                       </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 mt-2">
                       <div class="form-group mb-2">
                         <div class="form-label">Tanggal dokumen</div>
                         <input type="date" style="text-transform: uppercase;" class="form-control" id="dtp_tglDokumen" name="tgl_dokumen">
