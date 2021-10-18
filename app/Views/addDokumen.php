@@ -91,16 +91,20 @@
                       </div>
                       <div class="form-group">
                         <label class="form-label">Deskripsi Barang/Jasa</label>
-                        <textarea style="resize: none; text-transform: uppercase" class="form-control" rows="5" id="txt_deskripsi" name="deskripsi"></textarea>
+                        <textarea style="resize: none; text-transform: uppercase" class="form-control" rows="8" id="txt_deskripsi" name="deskripsi"></textarea>
                         <div class="invalid-feedback">Deskripsi harus diisi!</div>
                       </div>
                     </div>
                     <div class="col-lg-4">
+                      <div class="form-group mb-1">
+                        <div class="form-label">Anggaran tersedia</div>
+                        <input type="text" style="text-transform: uppercase; text-align: right;" class="form-control" id="lbl_anggaranTersedia" name="anggaran" disabled>
+                      </div>
                       <div class="form-group mb-2">
                         <div class="form-label">Nilai bahan</div>
                         <input type="text" style="text-transform: uppercase; text-align: right;" class="form-control" id="txt_nilaiBahan" name="bahan" placeholder="Nilai bahan">
                       </div>
-                      <div class="form-group mb-3">
+                      <div class="form-group mb-2">
                         <div class="form-label">Nilai jasa</div>
                         <input type="text" style="text-transform: uppercase; text-align: right;" class="form-control" id="txt_nilaiJasa" name="jasa" placeholder="Nilai jasa/upah">
                       </div>
