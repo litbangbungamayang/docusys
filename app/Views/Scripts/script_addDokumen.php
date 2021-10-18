@@ -11,10 +11,13 @@
   var txt_nilaiJasa = $("#txt_nilaiJasa");
   var txt_nilaiLain = $("#txt_nilaiLain");
   var txt_deskripsi = $("#txt_deskripsi");
+  var lbl_anggaranTersedia = $("#lbl_anggaranTersedia");
   var txt_nomorDokumen = $("#txt_nomorDokumen");
   var dtp_tglDokumen = $("#dtp_tglDokumen"); //get value = new Date(dtp_tglDokumen.val());
   var arr_permintaan = [];
   var tbl_permintaan = $("#tbl_permintaan");
+  var sisa_anggaran = 0;
+  var total_permintaan = 0;
   //=======================
   function addItem(){
       //d_addItem.modal("toggle");
@@ -22,6 +25,7 @@
       let jasa = parseInt(txt_nilaiJasa.val().replace(/[^0-9. ]/g,""));
       let lainnya = parseInt(txt_nilaiLain.val().replace(/[^0-9. ]/g,""));
       let jumlah = bahan + jasa + lainnya;
+      total_permintaan = total_permintaan + jumlah;
       if(cbx_rekening.val() !== "" && txt_deskripsi.val() !== "" && jumlah > 0){
         let data_permintaan = {
           "nomor_rekening" : cbx_rekening.val(),
@@ -50,34 +54,38 @@
       if(cbx_jenisDokumen.val() != "" && cbx_kategori.val() != "" &&
           cbx_unit.val() != "" && cbx_bagian.val() != "" && cbx_tahun.val() != "" &&
           txt_nomorDokumen.val() != "" && dtp_tglDokumen.val() != ""){
-        let data_dokumen = {
-          "jenis" : cbx_jenisDokumen.val().toUpperCase(),
-          "kategori" : cbx_kategori.val(),
-          "unit" : cbx_unit.val().toUpperCase(),
-          "bagian" : cbx_bagian.val().toUpperCase(),
-          "tahun" : cbx_tahun.val(),
-          "nomor_dokumen" : txt_nomorDokumen.val().toUpperCase(),
-          "tgl_dokumen" : dtp_tglDokumen.val()
-        }
-        let data_submit = {
-          "data_dokumen" : data_dokumen,
-          "data_permintaan" : arr_permintaan
-        }
-        $.ajax({
-          url: js_base_url + "C_addDokumen/submitPermintaan",
-          type: "post",
-          data: {
-            permintaan: JSON.stringify(data_submit)
-          },
-          dataType: "json",
-          success: function(response){
-            if (response == arr_permintaan.length){
-              alert("Data berhasil disimpan!");
-              resetFormHeader();
-              resetForm();
-            }
+        if(sisa_anggaran >= total_permintaan){
+          let data_dokumen = {
+            "jenis" : cbx_jenisDokumen.val().toUpperCase(),
+            "kategori" : cbx_kategori.val(),
+            "unit" : cbx_unit.val().toUpperCase(),
+            "bagian" : cbx_bagian.val().toUpperCase(),
+            "tahun" : cbx_tahun.val(),
+            "nomor_dokumen" : txt_nomorDokumen.val().toUpperCase(),
+            "tgl_dokumen" : dtp_tglDokumen.val()
           }
-        })
+          let data_submit = {
+            "data_dokumen" : data_dokumen,
+            "data_permintaan" : arr_permintaan
+          }
+          $.ajax({
+            url: js_base_url + "C_addDokumen/submitPermintaan",
+            type: "post",
+            data: {
+              permintaan: JSON.stringify(data_submit)
+            },
+            dataType: "json",
+            success: function(response){
+              if (response == arr_permintaan.length){
+                alert("Data berhasil disimpan!");
+                resetFormHeader();
+                resetForm();
+              }
+            }
+          })
+        } else {
+          alert("Sisa anggaran tidak mencukupi untuk permintaan ini!");
+        }
       } else {
         (cbx_jenisDokumen.val() === "") ? cbx_jenisDokumen.addClass("is-invalid") : "";
         (cbx_kategori.val() === "") ? cbx_kategori.addClass("is-invalid") : "";
@@ -189,7 +197,19 @@
       sortField: "label",
       searchField: "label",
       maxItems: 1,
-      placeholder: "Pilih rekening"
+      placeholder: "Pilih rekening",
+      onChange: function(value){
+        $.ajax({
+          dataType: "json",
+          type: "post",
+          data: {kode_rekening: value},
+          url: js_base_url + "C_addDokumen/getSisaAnggaran",
+          success: function(res){
+            sisa_anggaran = parseFloat(res.sisa);
+            lbl_anggaranTersedia.val("Rp" + sisa_anggaran.toLocaleString({}));
+          }
+        })
+      }
     });
     cbx_unit.selectize({
       create: false,

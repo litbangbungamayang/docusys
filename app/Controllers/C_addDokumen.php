@@ -42,5 +42,10 @@ class C_addDokumen extends BaseController
 		return $this->model_permintaan->addPermintaan($data_permintaan_submit);
 	}
 
+	public function getSisaAnggaran(){
+		$kode_rekening = $this->request->getVar("kode_rekening");
+		$this->model_anggaran = Model("M_Anggaran");
+		return $this->model_anggaran->getSisaAnggaran($kode_rekening);
+	}
 
 }
