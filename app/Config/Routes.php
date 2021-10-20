@@ -38,6 +38,7 @@ $routes->get('/trendline', 'C_trendline::index');
 $routes->add('detail/buma', 'C_detail::onfarm/buma');
 $routes->add('detail/cima', 'C_detail::onfarm/cima');
 $routes->add('/addDokumen', 'C_addDokumen::index');
+$routes->add('/monitoring', 'C_monitoring::index');
 
 
 /*

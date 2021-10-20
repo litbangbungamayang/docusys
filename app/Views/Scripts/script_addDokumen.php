@@ -128,6 +128,7 @@
     cbx_kategori[0].selectize.disable();
     cbx_rekening[0].selectize.disable();
     cbx_tahun[0].selectize.disable();
+    lbl_anggaranTersedia.val("");
   }
 
   txt_nilaiBahan.blur(function(){
@@ -185,6 +186,7 @@
               cbx_rekening[0].selectize.clearOptions();
               cbx_rekening[0].selectize.addOption(response);
               cbx_rekening[0].selectize.enable();
+              lbl_anggaranTersedia.val("");
             }
           }
         })
@@ -209,6 +211,7 @@
       maxItems: 1,
       placeholder: "Pilih rekening",
       onChange: function(value){
+        lbl_anggaranTersedia.val("");
         $.ajax({
           dataType: "json",
           type: "post",
@@ -231,7 +234,9 @@
       create: false,
       sortField: "text",
       onChange: function(value){
+        cbx_rekening[0].selectize.clear();
         cbx_tahun[0].selectize.enable();
+        lbl_anggaranTersedia.val("");
       }
     })
     cbx_jenisDokumen[0].selectize.addOption({value: 'au31', text: 'AU31'});
