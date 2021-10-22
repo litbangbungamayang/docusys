@@ -54,6 +54,38 @@
       if(cbx_jenisDokumen.val() != "" && cbx_kategori.val() != "" &&
           cbx_unit.val() != "" && cbx_bagian.val() != "" && cbx_tahun.val() != "" &&
           txt_nomorDokumen.val() != "" && dtp_tglDokumen.val() != ""){
+        if(sisa_anggaran < total_permintaan){
+          alert("Sisa anggaran tidak mencukupi!");
+        }
+        let data_dokumen = {
+          "jenis" : cbx_jenisDokumen.val().toUpperCase(),
+          "kategori" : cbx_kategori.val(),
+          "unit" : cbx_unit.val().toUpperCase(),
+          "bagian" : cbx_bagian.val().toUpperCase(),
+          "tahun" : cbx_tahun.val(),
+          "nomor_dokumen" : txt_nomorDokumen.val().toUpperCase(),
+          "tgl_dokumen" : dtp_tglDokumen.val()
+        }
+        let data_submit = {
+          "data_dokumen" : data_dokumen,
+          "data_permintaan" : arr_permintaan
+        }
+        $.ajax({
+          url: js_base_url + "C_addDokumen/submitPermintaan",
+          type: "post",
+          data: {
+            permintaan: JSON.stringify(data_submit)
+          },
+          dataType: "json",
+          success: function(response){
+            if (response == arr_permintaan.length){
+              alert("Data berhasil disimpan!");
+              resetFormHeader();
+              resetForm();
+            }
+          }
+        })
+        /*
         if(sisa_anggaran >= total_permintaan){
           let data_dokumen = {
             "jenis" : cbx_jenisDokumen.val().toUpperCase(),
@@ -86,6 +118,7 @@
         } else {
           alert("Sisa anggaran tidak mencukupi untuk permintaan ini!");
         }
+        */
       } else {
         (cbx_jenisDokumen.val() === "") ? cbx_jenisDokumen.addClass("is-invalid") : "";
         (cbx_kategori.val() === "") ? cbx_kategori.addClass("is-invalid") : "";
