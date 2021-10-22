@@ -176,6 +176,18 @@
     koreksiDesimal(txt_nilaiLain);
   })
 
+  txt_nomorDokumen.blur(function(){
+    $.getJSON(
+      "C_addDokumen/cekDokumen?nomor_dokumen=" + txt_nomorDokumen.val(),
+      function(response){
+        //console.log(response);
+        if (response !== null){
+          alert("Nomor dokumen sudah ada!");
+          resetFormHeader();
+        }
+    })
+  })
+
   function koreksiDesimal(textBox){
     var val_textbox = textBox.val();
     val_textbox = parseInt(val_textbox.replace(/[^0-9.]/,""));

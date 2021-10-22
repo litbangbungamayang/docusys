@@ -26,20 +26,22 @@
           <div class="card card-body">
             <div class="row">
               <div class="col-lg-12">
-                <table id="tbl_monitoring" class="table card-table table-vcenter text-nowrap datatable table-sm">
+                <table id="tbl_monitoring" class="table card-table table-vcenter datatable table-sm">
                   <thead>
                     <tr>
                       <th class="w-1">No.</th>
+                      <th style="text-align:left;">Rekg.</th>
                       <th style="text-align:left;">Unit</th>
                       <th style="text-align:left;">Jenis</th>
+                      <th style="text-align:left;">Kategori</th>
                       <th style="text-align:left;">No. Dokumen</th>
+                      <th style="text-align:left;">Deskripsi</th>
                       <th style="text-align:right;">Total Nilai</th>
                       <th style="text-align:left;">Status</th>
-                      <th style="text-align:center;"></th>
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody style="font-size:12px">
                   </tbody>
                 </table>
               </div>

@@ -21,12 +21,12 @@
 
   function initTable(){
     tbl_monitoring.DataTable({
-      bFilter: false,
+      bFilter: true,
       bPaginate: true,
       bSort: false,
       bInfo: false,
       ajax:{
-        url: js_base_url + "C_monitoring/getDataMonitoring?unit=buma",
+        url: js_base_url + "C_monitoring/getDataMonitoring?unit=",
         dataSrc: ""
       },
       columns : [
@@ -39,7 +39,21 @@
         {data: "nomor_rekening"},
         {data: "unit"},
         {data: "jenis"},
+        {
+          data: "kategori",
+          render: function(data, type, row, meta){
+            let label = "";
+            switch(data){
+              case "1": label = "INVESTASI"
+              break;
+              case "2": label = "EKSPLOITASI"
+              break;
+            }
+            return label;
+          },
+        },
         {data: "nomor_dokumen"},
+        {data: "deskripsi"},
         {
           data: "total",
           render: function(data, type, row, meta){
@@ -48,16 +62,27 @@
               "</div>";
           }
         },
-        {data: "status"},
         {
-          data: "button",
+          data: "status",
           render: function(data, type, row, meta){
-            return '<a class="btn btn-outline-primary btn-icon" onClick="hapusItem('+ meta.row + ')" id="" href="#"><i class="bi bi-trash"></i></a>'
+            let label = "";
+            switch(data){
+              case "1": label = "<span class='badge bg-blue ms-auto'>submit</span>"
+              break;
+              case "2": label = "<span class='badge bg-green ms-auto'>valid</span>"
+              break;
+              case "3": label = "<span class='badge bg-red ms-auto'>reject</span>"
+              break;
+            }
+            return label;
           },
-          className: "text-center"
+          className: "text-left"
         }
       ]
     });
+    tbl_monitoring.on("click", "tbody tr", function(){
+      console.log("API row values = ", tbl_monitoring.DataTable().row(this).data().id);
+    })
   }
 
   function defaultLoad(){

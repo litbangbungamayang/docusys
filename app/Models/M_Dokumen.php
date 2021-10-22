@@ -17,4 +17,11 @@ class M_Dokumen extends Model{
     $this->insert($arg);
     return json_encode($this->insertID);
   }
+
+  function cekDokumen($arg){
+    $builder = $this->db->table($this->table)->select("*");
+    $builder->where("nomor_dokumen", $arg);
+    $builder->where("status <> 3");
+    return json_encode($builder->get()->getRow());
+  }
 }

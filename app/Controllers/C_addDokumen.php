@@ -55,4 +55,10 @@ class C_addDokumen extends BaseController
 		return $this->model_anggaran->getSisaAnggaran($arg);
 	}
 
+	public function cekDokumen(){
+		$nomor_dokumen = $this->request->getVar("nomor_dokumen");
+		$this->model_dokumen = Model("M_Dokumen");
+		return $this->model_dokumen->cekDokumen($nomor_dokumen);
+	}
+
 }
