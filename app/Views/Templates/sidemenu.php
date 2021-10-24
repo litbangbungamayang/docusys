@@ -29,6 +29,14 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="<?php echo site_url('/addPpab');?>" >
+            <i class="bi bi-pencil-square" style="margin-right:10px"></i>
+            <span class="nav-link-title">
+              Buat PPAB
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="<?php echo site_url('/monitoring');?>" >
             <i class="bi bi-folder" style="margin-right:10px"></i>
             <span class="nav-link-title">

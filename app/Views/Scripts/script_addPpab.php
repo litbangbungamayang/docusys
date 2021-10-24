@@ -15,7 +15,9 @@
   var txt_nomorDokumen = $("#txt_nomorDokumen");
   var dtp_tglDokumen = $("#dtp_tglDokumen"); //get value = new Date(dtp_tglDokumen.val());
   var arr_permintaan = [];
+  var arr_pilihan = [];
   var tbl_permintaan = $("#tbl_permintaan");
+  var tbl_dipilih = $("#tbl_dipilih");
   var sisa_anggaran = 0;
   var total_permintaan = 0;
   //=======================
@@ -47,6 +49,22 @@
   function hapusItem(index){
     arr_permintaan.splice(index,1);
     refreshTblPermintaan();
+  }
+
+  function transferItem(id){
+    let arr_filter = arr_permintaan.filter(arr => arr.id === id);
+    arr_filter.forEach((item, i) => {
+      arr_pilihan.push(item);
+    });
+    for(let i = 0; i < arr_permintaan.length; i++){
+      for(let j = 0; j < arr_pilihan.length; j++){
+        if(arr_permintaan[i].id === arr_pilihan[j].id){
+          arr_permintaan.splice(i,1);
+        }
+      }
+    }
+    refreshTblPermintaan();
+    refreshTblPilihan();
   }
 
   function save(){
@@ -181,7 +199,6 @@
     $.getJSON(
       "C_addDokumen/cekDokumen?nomor_dokumen=" + txt_nomorDokumen.val(),
       function(response){
-        //console.log(response);
         if (response !== null){
           alert("Nomor dokumen sudah ada!");
           resetFormHeader();
@@ -202,6 +219,41 @@
     tbl_permintaan.DataTable().draw();
   }
 
+  function refreshTblPilihan(){
+    tbl_dipilih.DataTable().clear();
+    tbl_dipilih.DataTable().rows.add(arr_pilihan);
+    tbl_dipilih.DataTable().draw();
+  }
+
+  function searchDok(){
+    /*
+    tbl_permintaan.DataTable().ajax.url(js_base_url +
+      "C_addPpab/getPermintaan?" +
+      "unit=" + cbx_unit.val() +
+      "&jenis=" + cbx_jenisDokumen.val() +
+      "&tahun=" + cbx_tahun.val() +
+      "&kategori=" + cbx_kategori.val() +
+      "&bagian=" + cbx_bagian.val()
+    ).load();
+    */
+    $.ajax({
+      url: js_base_url + "C_addPpab/getPermintaan",
+      data: {
+        unit: cbx_unit.val(),
+        jenis: cbx_jenisDokumen.val(),
+        tahun: cbx_tahun.val(),
+        kategori: cbx_kategori.val(),
+        bagian: cbx_bagian.val()
+      },
+      dataType: "json",
+      type: "get",
+      success: function(response){
+        arr_permintaan = response;
+        refreshTblPermintaan();
+      }
+    })
+  }
+
   function initData(){
     $.getJSON(
       "C_addDokumen/getDataRekening",
@@ -218,36 +270,14 @@
     cbx_kategori.selectize({
       create: false,
       sortField: "text",
-      onChange: function(value){
-        $.ajax({
-          dataType: "json",
-          type: "get",
-          data: {
-            kategori: value
-          },
-          url: "C_addDokumen/getDataRekeningByKategori",
-          success: function(response){
-            if(cbx_unit.val() !== ""){
-              cbx_rekening[0].selectize.clear();
-              cbx_rekening[0].selectize.clearOptions();
-              cbx_rekening[0].selectize.addOption(response);
-              cbx_rekening[0].selectize.enable();
-              lbl_anggaranTersedia.val("");
-            }
-          }
-        })
-      }
     });
     cbx_bagian.selectize({
       create: false,
-      sortField: "text"
+      sortField: "text",
     });
     cbx_tahun.selectize({
       create: false,
       sortField: "text",
-      onChange: function(value){
-        cbx_kategori[0].selectize.enable();
-      }
     });
     cbx_rekening.selectize({
       valueField: "kode_rekening",
@@ -303,14 +333,12 @@
     }
     cbx_unit[0].selectize.addOption({value: 'buma', text: 'BUMA'});
     cbx_unit[0].selectize.addOption({value: 'cima', text: 'CIMA'});
-    cbx_rekening[0].selectize.disable();
-    cbx_kategori[0].selectize.disable();
-    cbx_tahun[0].selectize.disable();
   }
 
   function initTable(){
+    //$("#tblList").DataTable().ajax.url(js_base_url + "Rdkk_list/getKelompokByTahun?tahun_giling=" + tahun_giling).load();
     tbl_permintaan.DataTable({
-      bFilter: false,
+      bFilter: true,
       bPaginate: true,
       bSort: false,
       bInfo: false,
@@ -323,47 +351,53 @@
           }
         },
         {data: "nomor_rekening"},
-        {data: "deskripsi"},
         {
-          data: "bahan",
+          data: "deskripsi",
+          /*
           render: function(data, type, row, meta){
-            return "<div style='text-align:right'>" +
-              parseInt(data).toLocaleString(undefined, {maximumFractionDigits:0}) +
-              "</div>";
+            return data.substr(0,10);
           }
+          */
         },
-        {
-          data: "upah",
-          render: function(data, type, row, meta){
-            return "<div style='text-align:right'>" +
-              parseInt(data).toLocaleString(undefined, {maximumFractionDigits:0}) +
-              "</div>";
-          }
-        },
-        {
-          data: "lainnya",
-          render: function(data, type, row, meta){
-            return "<div style='text-align:right'>" +
-              parseInt(data).toLocaleString(undefined, {maximumFractionDigits:0}) +
-              "</div>";
-          }
-        },
+        {data: "nomor_dokumen"},
         {
           render: function(data, type, row, meta){
             return "<div style='text-align:right'>" +
               (parseInt(row.bahan) + parseInt(row.upah) + parseInt(row.lainnya)).toLocaleString(undefined, {maximumFractionDigits:0}) +
               "</div>";
           }
-        },
-        {
-          data: "button",
-          render: function(data, type, row, meta){
-            return '<a class="btn btn-outline-primary btn-icon" onClick="hapusItem('+ meta.row + ')" id="" href="#"><i class="bi bi-trash"></i></a>'
-          },
-          className: "text-center"
         }
       ]
     });
+    tbl_dipilih.DataTable({
+      bFilter: false,
+      bPaginate: true,
+      bSort: false,
+      bInfo: false,
+      data: arr_pilihan,
+      columns : [
+        {
+          data: "no",
+          render: function(data, type, row, meta){
+            return meta.row + meta.settings._iDisplayStart + 1;
+          }
+        },
+        {data: "nomor_rekening"},
+        {data: "deskripsi"},
+        {data: "nomor_dokumen"},
+        {
+          render: function(data, type, row, meta){
+            return "<div style='text-align:right'>" +
+              (parseInt(row.bahan) + parseInt(row.upah) + parseInt(row.lainnya)).toLocaleString(undefined, {maximumFractionDigits:0}) +
+              "</div>";
+          }
+        }
+      ]
+    });
+    tbl_permintaan.on("click", "tbody tr", function(){
+      //console.log("API row values = ", tbl_permintaan.DataTable().row(this).data().id);
+      transferItem(tbl_permintaan.DataTable().row(this).data().id);
+    })
   }
 
   function defaultLoad(){

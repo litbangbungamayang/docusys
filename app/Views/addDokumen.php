@@ -129,7 +129,7 @@
                   </div>
                   <div class="row">
                     <div class="col-lg-12">
-                      <table id="tbl_permintaan" class="table card-table table-vcenter text-nowrap datatable table-sm">
+                      <table id="tbl_permintaan" class="table card-table table-vcenter datatable table-sm">
                         <thead>
                           <tr>
                             <th class="w-1">No.</th>
@@ -143,7 +143,7 @@
                             <th></th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size:12px">
                         </tbody>
                       </table>
                     </div>
