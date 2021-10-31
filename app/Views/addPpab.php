@@ -112,7 +112,7 @@
                       <div class="card-body">
                         <div class="row">
                           <div class="col-lg-12">
-                            <table id="tbl_dipilih" class="table card-table table-vcenter datatable table-sm">
+                            <table id="tbl_dipilih" class="table card-table table-vcenter datatable table-sm table-hover">
                               <thead>
                                 <tr>
                                   <th class="w-1">No.</th>
@@ -124,6 +124,13 @@
                               </thead>
                               <tbody style="font-size:13px">
                               </tbody>
+                              <tfoot class="bg-gray">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th style="text-align:right;"></th>
+                              </tfoot>
                             </table>
                           </div>
                         </div>
@@ -144,7 +151,7 @@
                   <div class="row mb-2">
                     <div class="col-lg-12">
                       <div class="">
-                        <a href="#" id="btn_save" onClick="save();" class="btn btn-blue w-70">
+                        <a href="#" id="btn_save" onClick="save()" class="btn btn-blue w-70">
                           <i class="bi bi-save" style="margin-right:5px"></i>Simpan Data
                         </a>
                       </div>

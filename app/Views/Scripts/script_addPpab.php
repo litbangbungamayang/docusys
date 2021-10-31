@@ -67,89 +67,28 @@
     refreshTblPilihan();
   }
 
-  function save(){
-    if(arr_permintaan.length > 0){
-      if(cbx_jenisDokumen.val() != "" && cbx_kategori.val() != "" &&
-          cbx_unit.val() != "" && cbx_bagian.val() != "" && cbx_tahun.val() != "" &&
-          txt_nomorDokumen.val() != "" && dtp_tglDokumen.val() != ""){
-        if(sisa_anggaran < total_permintaan){
-          alert("Sisa anggaran tidak mencukupi!");
+  function backTransferItem(id){
+    let arr_filter = arr_pilihan.filter(arr => arr.id === id);
+    arr_filter.forEach((item, i) => {
+      arr_permintaan.push(item);
+    });
+    for(let i = 0; i < arr_filter.length; i++){
+      for(let j = 0; j < arr_pilihan.length; j++){
+        if(arr_filter[i].id === arr_pilihan[j].id){
+          arr_pilihan.splice(j,1);
         }
-        let data_dokumen = {
-          "jenis" : cbx_jenisDokumen.val().toUpperCase(),
-          "kategori" : cbx_kategori.val(),
-          "unit" : cbx_unit.val().toUpperCase(),
-          "bagian" : cbx_bagian.val().toUpperCase(),
-          "tahun" : cbx_tahun.val(),
-          "nomor_dokumen" : txt_nomorDokumen.val().toUpperCase(),
-          "tgl_dokumen" : dtp_tglDokumen.val(),
-          "status" : "1"
-        }
-        let data_submit = {
-          "data_dokumen" : data_dokumen,
-          "data_permintaan" : arr_permintaan
-        }
-        $.ajax({
-          url: js_base_url + "C_addDokumen/submitPermintaan",
-          type: "post",
-          data: {
-            permintaan: JSON.stringify(data_submit)
-          },
-          dataType: "json",
-          success: function(response){
-            if (response == arr_permintaan.length){
-              alert("Data berhasil disimpan!");
-              resetFormHeader();
-              resetForm();
-            }
-          }
-        })
-        /*
-        if(sisa_anggaran >= total_permintaan){
-          let data_dokumen = {
-            "jenis" : cbx_jenisDokumen.val().toUpperCase(),
-            "kategori" : cbx_kategori.val(),
-            "unit" : cbx_unit.val().toUpperCase(),
-            "bagian" : cbx_bagian.val().toUpperCase(),
-            "tahun" : cbx_tahun.val(),
-            "nomor_dokumen" : txt_nomorDokumen.val().toUpperCase(),
-            "tgl_dokumen" : dtp_tglDokumen.val()
-          }
-          let data_submit = {
-            "data_dokumen" : data_dokumen,
-            "data_permintaan" : arr_permintaan
-          }
-          $.ajax({
-            url: js_base_url + "C_addDokumen/submitPermintaan",
-            type: "post",
-            data: {
-              permintaan: JSON.stringify(data_submit)
-            },
-            dataType: "json",
-            success: function(response){
-              if (response == arr_permintaan.length){
-                alert("Data berhasil disimpan!");
-                resetFormHeader();
-                resetForm();
-              }
-            }
-          })
-        } else {
-          alert("Sisa anggaran tidak mencukupi untuk permintaan ini!");
-        }
-        */
-      } else {
-        (cbx_jenisDokumen.val() === "") ? cbx_jenisDokumen.addClass("is-invalid") : "";
-        (cbx_kategori.val() === "") ? cbx_kategori.addClass("is-invalid") : "";
-        (cbx_unit.val() === "") ? cbx_unit.addClass("is-invalid") : "";
-        (cbx_bagian.val() === "") ? cbx_bagian.addClass("is-invalid") : "";
-        (cbx_tahun.val() === "") ? cbx_tahun.addClass("is-invalid") : "";
-        (txt_nomorDokumen.val() === "") ? txt_nomorDokumen.addClass("is-invalid") : "";
-        (dtp_tglDokumen.val() === "") ? dtp_tglDokumen.addClass("is-invalid") : "";
       }
-    } else {
-      alert("Permintaan belum diinput!");
     }
+    refreshTblPermintaan();
+    refreshTblPilihan();
+  }
+
+  function save(){
+    var walink = 'https://web.whatsapp.com/send';
+    var nomorHP = '+6281383913914';
+    var teksPesan = "Hai, Mas Azid saya sudah kirim file, berikut detailnya:";
+    var kirimFile = walink + '?phone=' + nomorHP + '&text=' + teksPesan;
+    window.open(kirimFile,'_blank');
   }
 
   function resetForm(){
@@ -255,11 +194,7 @@
   }
 
   function initData(){
-    $.getJSON(
-      "C_addDokumen/getDataRekening",
-      function(response){
-        cbx_rekening[0].selectize.addOption(response);
-    })
+
   }
 
   function initCombo(){
@@ -310,7 +245,6 @@
       create: false,
       sortField: "text",
       onChange: function(value){
-        cbx_rekening[0].selectize.clear();
         cbx_tahun[0].selectize.enable();
         lbl_anggaranTersedia.val("");
       }
@@ -345,10 +279,8 @@
       data: arr_permintaan,
       columns : [
         {
-          data: "no",
-          render: function(data, type, row, meta){
-            return meta.row + meta.settings._iDisplayStart + 1;
-          }
+          data: null,
+          defaultContent: ""
         },
         {data: "nomor_rekening"},
         {
@@ -392,11 +324,35 @@
               "</div>";
           }
         }
-      ]
+      ],
+      "footerCallback": function( tfoot, data, start, end, display ) {
+        var api = this.api(), data;
+        let total = 0;
+        data.forEach((item, i) => {
+          total += +item.total;
+        });
+
+        console.log(data);
+        $(api.column(4).footer()).html(
+          parseInt(total).toLocaleString(undefined, {maximumFractionDigits:0})
+        );
+      }
     });
     tbl_permintaan.on("click", "tbody tr", function(){
-      //console.log("API row values = ", tbl_permintaan.DataTable().row(this).data().id);
       transferItem(tbl_permintaan.DataTable().row(this).data().id);
+    });
+    tbl_dipilih.on("click", "tbody tr", function(){
+      backTransferItem(tbl_dipilih.DataTable().row(this).data().id);
+    });
+    tbl_permintaan.on("order.dt search.dt", function(){
+      tbl_permintaan.DataTable().column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        cell.innerHTML = i+1;
+      });
+    })
+    tbl_dipilih.on("order.dt search.dt", function(){
+      tbl_dipilih.DataTable().column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        cell.innerHTML = i+1;
+      });
     })
   }
 
